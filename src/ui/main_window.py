@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (
     QInputDialog
 )
 from PyQt5.QtCore import Qt, QDate
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QBrush, QColor, QFont
 
 from src.core.git_processor import GitProcessor
 from src.core.ticket_analyzer import TicketAnalyzer
@@ -363,12 +363,20 @@ class MainWindow(QMainWindow):
         self.table.setRowCount(0)  # Vider le tableau
         row = 0
         for journee, tickets in sorted(self.durees_par_journee.items()):
+            # Ligne de titre pour le jour
+            self.table.insertRow(row)
+            title_item = QTableWidgetItem(str(journee))
+            title_item.setFont(QFont('Arial', weight=QFont.Bold))
+            title_item.setBackground(QBrush(QColor(220, 220, 220)))  # gris clair
+            title_item.setTextAlignment(Qt.AlignCenter)
+            self.table.setSpan(row, 0, 1, 5)
+            self.table.setItem(row, 0, title_item)
+            row += 1
             for t in tickets:
                 try:
                     self.table.insertRow(row)
-                    # Date
-                    date_item = QTableWidgetItem(str(journee))
-                    date_item.setTextAlignment(Qt.AlignCenter)
+                    # Date (vide car déjà dans le titre)
+                    date_item = QTableWidgetItem("")
                     self.table.setItem(row, 0, date_item)
                     # Ticket
                     ticket_item = QTableWidgetItem(t.get('ticket', '?'))
@@ -398,10 +406,25 @@ class MainWindow(QMainWindow):
                     fin_item = QTableWidgetItem(heure_fin_str)
                     fin_item.setTextAlignment(Qt.AlignCenter)
                     self.table.setItem(row, 4, fin_item)
-                    # Colorer la ligne en rouge si erreur
+                    # Coloration matin/après-midi/erreur
+                    color = None
                     if t.get('erreur', False):
+                        color = QColor(255, 150, 150)  # rouge clair
+                    else:
+                        # Récupérer les bornes matin/aprem
+                        from datetime import datetime
+                        work_periods = self.config.get_work_periods()
+                        morning_end = work_periods['morning']['end']
+                        afternoon_start = work_periods['afternoon']['start']
+                        heure_debut_val = heure_debut_str
+                        if heure_debut_val:
+                            if heure_debut_val < morning_end:
+                                color = QColor(200, 255, 200)  # vert clair
+                            elif heure_debut_val >= afternoon_start:
+                                color = QColor(200, 220, 255)  # bleu clair
+                    if color:
                         for col in range(5):
-                            self.table.item(row, col).setBackground(Qt.red)
+                            self.table.item(row, col).setBackground(QBrush(color))
                 except Exception:
                     self.table.insertRow(row)
                     for col in range(5):
