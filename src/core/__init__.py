@@ -1,0 +1,1 @@
+"""Module cœur de l'application contenant la logique métier.""" 

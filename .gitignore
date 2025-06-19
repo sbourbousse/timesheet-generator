@@ -1,0 +1,44 @@
+# Environnements virtuels
+.venv/
+venv/
+__pycache__/
+
+# Fichiers Python compilés
+*.pyc
+*.pyo
+*.pyd
+
+# Fichiers de logs et temporaires
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Fichiers de configuration utilisateur
+*.env
+*.DS_Store
+*.idea/
+*.vscode/
+
+# Fichiers Jupyter
+*.ipynb_checkpoints
+
+# Fichiers d'export et de résultats
+exports/
+*.xlsx
+*.csv
+*.json
+*.xml
+output.json
+
+# Archives
+*.zip
+
+# Fichiers spécifiques au projet
+config.yaml
+
+tempo_fenoy.zip
+
+# Fichiers système
+Thumbs.db
+Desktop.ini 
