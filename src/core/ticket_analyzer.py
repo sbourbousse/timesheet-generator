@@ -70,14 +70,16 @@ class TicketAnalyzer:
                             'duree': duree1,
                             'debut': heure_debut,
                             'fin': heure_fin_matin,
-                            'erreur': erreur
+                            'erreur': erreur,
+                            'message': commit_subject
                         })
                         infos_par_journee[journee].append({
                             'ticket': ticket_code,
                             'duree': duree2,
                             'debut': heure_debut_aprem,
                             'fin': heure_fin,
-                            'erreur': erreur
+                            'erreur': erreur,
+                            'message': commit_subject
                         })
                     else:
                         duree = heure_fin - heure_debut
@@ -89,7 +91,8 @@ class TicketAnalyzer:
                             'duree': duree,
                             'debut': heure_debut,
                             'fin': heure_fin,
-                            'erreur': erreur
+                            'erreur': erreur,
+                            'message': commit_subject
                         })
                 except Exception:
                     infos_par_journee[journee].append({
@@ -97,7 +100,8 @@ class TicketAnalyzer:
                         'duree': timedelta(0),
                         'debut': heure_debut,
                         'fin': heure_fin,
-                        'erreur': True
+                        'erreur': True,
+                        'message': commit_subject
                     })
                 heure_courante = heure_fin
                 tickets_du_jour.append(ticket_code)

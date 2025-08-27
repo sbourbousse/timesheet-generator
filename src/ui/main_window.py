@@ -126,7 +126,7 @@ class MainWindow(QMainWindow):
         # Tableau des résultats
         self.table = QTableWidget()
         self.table.setColumnCount(5)
-        self.table.setHorizontalHeaderLabels(["Date", "Ticket", "Durée (heures)", "Heure de début", "Heure de fin"])
+        self.table.setHorizontalHeaderLabels(["Message de commit", "Ticket", "Durée (heures)", "Heure de début", "Heure de fin"])
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         layout.addWidget(self.table)
         
@@ -375,9 +375,9 @@ class MainWindow(QMainWindow):
             for t in tickets:
                 try:
                     self.table.insertRow(row)
-                    # Date (vide car déjà dans le titre)
-                    date_item = QTableWidgetItem("")
-                    self.table.setItem(row, 0, date_item)
+                    # Message de commit
+                    message_item = QTableWidgetItem(t.get('message', ''))
+                    self.table.setItem(row, 0, message_item)
                     # Ticket
                     ticket_item = QTableWidgetItem(t.get('ticket', '?'))
                     ticket_item.setTextAlignment(Qt.AlignCenter)

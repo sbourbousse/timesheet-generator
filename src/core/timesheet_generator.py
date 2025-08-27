@@ -49,7 +49,8 @@ class TimesheetGenerator:
                     "code": t['ticket'],
                     "duration": duration,
                     "start": t['debut'].strftime('%H:%M'),
-                    "end": t['fin'].strftime('%H:%M')
+                    "end": t['fin'].strftime('%H:%M'),
+                    "message": t['message']
                 })
             json_array.append(day_data)
         with open(output_file, 'w', encoding='utf-8') as fp:
@@ -74,7 +75,12 @@ class TimesheetGenerator:
         for journee, tickets in durees_par_journee.items():
             day = ET.SubElement(root, 'day', date=str(journee))
             for t in tickets:
-                ET.SubElement(day, 'ticket', code=t['ticket'], duration=str(t['duree'].total_seconds()), start=t['debut'].strftime('%H:%M'), end=t['fin'].strftime('%H:%M'))
+                ET.SubElement(day, 'ticket', 
+                    code=t['ticket'], 
+                    duration=str(t['duree'].total_seconds()), 
+                    start=t['debut'].strftime('%H:%M'), 
+                    end=t['fin'].strftime('%H:%M'),
+                    message=t['message'])
         xmlstr = minidom.parseString(ET.tostring(root)).toprettyxml(indent="   ")
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(xmlstr)
